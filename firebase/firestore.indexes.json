@@ -1,0 +1,46 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "activites",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "exploitation_ref",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date_prevue",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "activites",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "exploitation_ref",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date_prevue",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "activites",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "parcelle_ref",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date_prevue",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "503287044079",
+    "project_id": "d-e-m-e-t-e-rv1-jorr0i",
+    "storage_bucket": "d-e-m-e-t-e-rv1-jorr0i.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:503287044079:android:7e7d0d46e31c0eae05081a",
+        "android_client_info": {
+          "package_name": "com.mycompany.demeterv1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxObPrKXfjBBqRUtCr5rEWYlMLdBbdU-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:503287044079:android:9524ef185f7b38fb05081a",
+        "android_client_info": {
+          "package_name": "com.mycompany.demeterv11"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxObPrKXfjBBqRUtCr5rEWYlMLdBbdU-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

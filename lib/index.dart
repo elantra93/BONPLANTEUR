@@ -1,0 +1,61 @@
+// Export pages
+export '/authentification/login_phone_page/login_phone_page_widget.dart'
+    show LoginPhonePageWidget;
+export '/authentification/o_t_p_verification_page/o_t_p_verification_page_widget.dart'
+    show OTPVerificationPageWidget;
+export '/home/dashboard_page/dashboard_page_widget.dart'
+    show DashboardPageWidget;
+export '/champs/exploitations/mes_exploitations/mes_exploitations_widget.dart'
+    show MesExploitationsWidget;
+export '/champs/activites/ajouter_activite_page/ajouter_activite_page_widget.dart'
+    show AjouterActivitePageWidget;
+export '/champs/activites/liste_activites_page/liste_activites_page_widget.dart'
+    show ListeActivitesPageWidget;
+export '/tresor/stocks/stocks_page/stocks_page_widget.dart'
+    show StocksPageWidget;
+export '/tresor/stocks/ajouter_consommation_stock_page/ajouter_consommation_stock_page_widget.dart'
+    show AjouterConsommationStockPageWidget;
+export '/tresor/recolte/recoltes_page/recoltes_page_widget.dart'
+    show RecoltesPageWidget;
+export '/parameters/profil_page/profil_page_widget.dart' show ProfilPageWidget;
+export '/parameters/notifications_page/notifications_page_widget.dart'
+    show NotificationsPageWidget;
+export '/tresor/depenses/ajouter_depense_page/ajouter_depense_page_widget.dart'
+    show AjouterDepensePageWidget;
+export '/tresor/depenses/liste_depenses/liste_depenses_widget.dart'
+    show ListeDepensesWidget;
+export '/champs/activites/detail_activite_page/detail_activite_page_widget.dart'
+    show DetailActivitePageWidget;
+export '/champs/parcelles/detail_parcelle_page/detail_parcelle_page_widget.dart'
+    show DetailParcellePageWidget;
+export '/champs/parcelles/liste_parcelles/liste_parcelles_widget.dart'
+    show ListeParcellesWidget;
+export '/authentification/login1/login1_widget.dart' show Login1Widget;
+export '/authentification/create_account1/create_account1_widget.dart'
+    show CreateAccount1Widget;
+export '/champs/exploitations/ajouter_exploitation_page/ajouter_exploitation_page_widget.dart'
+    show AjouterExploitationPageWidget;
+export '/champs/parcelles/ajouter_parcelle_page/ajouter_parcelle_page_widget.dart'
+    show AjouterParcellePageWidget;
+export '/champs/exploitations/detail_exploitation_page/detail_exploitation_page_widget.dart'
+    show DetailExploitationPageWidget;
+export '/personnel/liste_team/liste_team_widget.dart' show ListeTeamWidget;
+export '/personnel/ajouter_collaborateur_page/ajouter_collaborateur_page_widget.dart'
+    show AjouterCollaborateurPageWidget;
+export '/tresor/tresor/tresor_widget.dart' show TresorWidget;
+export '/champs/exploitations/modifier_exploitation/modifier_exploitation_widget.dart'
+    show ModifierExploitationWidget;
+export '/authentification/motde_passe_oublie_email/motde_passe_oublie_email_widget.dart'
+    show MotdePasseOublieEmailWidget;
+export '/champs/parcelles/modifier_parcelle/modifier_parcelle_widget.dart'
+    show ModifierParcelleWidget;
+export '/tresor/depenses/details_depense/details_depense_widget.dart'
+    show DetailsDepenseWidget;
+export '/tresor/materiel/liste_materiel/liste_materiel_widget.dart'
+    show ListeMaterielWidget;
+export '/tresor/materiel/detail_materiel/detail_materiel_widget.dart'
+    show DetailMaterielWidget;
+export '/tresor/materiel/ajouter_materiel/ajouter_materiel_widget.dart'
+    show AjouterMaterielWidget;
+export '/tresor/materiel/modifier_materiel/modifier_materiel_widget.dart'
+    show ModifierMaterielWidget;
