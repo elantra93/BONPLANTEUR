@@ -147,7 +147,7 @@ class _RecoltesPageWidgetState extends State<RecoltesPageWidget> {
           child: Padding(
             padding: EdgeInsets.all(16.0),
             child: StreamBuilder<List<RecoltesRecord>>(
-              stream: queryRecoltesRecord(),
+              stream: queryRecoltesRecord(limit: 50),
               builder: (context, snapshot) {
                 // Customize what your widget looks like when it's loading.
                 if (!snapshot.hasData) {

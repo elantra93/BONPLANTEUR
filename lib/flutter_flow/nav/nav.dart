@@ -84,17 +84,20 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: '_initialize',
           path: '/',
+          requireAuth: false,
           builder: (context, _) =>
               appStateNotifier.loggedIn ? NavBarPage() : CreateAccount1Widget(),
         ),
         FFRoute(
           name: LoginPhonePageWidget.routeName,
           path: LoginPhonePageWidget.routePath,
+          requireAuth: false,
           builder: (context, params) => LoginPhonePageWidget(),
         ),
         FFRoute(
           name: OTPVerificationPageWidget.routeName,
           path: OTPVerificationPageWidget.routePath,
+          requireAuth: false,
           builder: (context, params) => OTPVerificationPageWidget(
             phonenumber: params.getParam(
               'phonenumber',
@@ -233,11 +236,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: Login1Widget.routeName,
           path: Login1Widget.routePath,
+          requireAuth: false,
           builder: (context, params) => Login1Widget(),
         ),
         FFRoute(
           name: CreateAccount1Widget.routeName,
           path: CreateAccount1Widget.routePath,
+          requireAuth: false,
           builder: (context, params) => CreateAccount1Widget(),
         ),
         FFRoute(
@@ -315,6 +320,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: MotdePasseOublieEmailWidget.routeName,
           path: MotdePasseOublieEmailWidget.routePath,
+          requireAuth: false,
           builder: (context, params) => MotdePasseOublieEmailWidget(),
         ),
         FFRoute(
@@ -527,7 +533,7 @@ class FFRoute {
     required this.name,
     required this.path,
     required this.builder,
-    this.requireAuth = false,
+    this.requireAuth = true,
     this.asyncParams = const {},
     this.routes = const [],
   });

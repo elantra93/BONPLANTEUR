@@ -6,6 +6,8 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/upload_data.dart';
+import '/widgets/components/components.dart';
+import '/services/rbac_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -96,11 +98,11 @@ class _DetailActivitePageWidgetState extends State<DetailActivitePageWidget> {
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
             body: Center(
               child: SizedBox(
-                width: 50.0,
-                height: 50.0,
-                child: SpinKitFadingCube(
-                  color: FlutterFlowTheme.of(context).tertiary,
-                  size: 50.0,
+                width: 40.0,
+                height: 40.0,
+                child: CircularProgressIndicator(
+                  color: FlutterFlowTheme.of(context).primary,
+                  strokeWidth: 3,
                 ),
               ),
             ),
@@ -117,92 +119,42 @@ class _DetailActivitePageWidgetState extends State<DetailActivitePageWidget> {
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-            appBar: AppBar(
-              backgroundColor: FlutterFlowTheme.of(context).secondary,
-              automaticallyImplyLeading: false,
-              leading: FlutterFlowIconButton(
-                borderRadius: 20.0,
-                buttonSize: 40.0,
-                icon: Icon(
-                  Icons.arrow_back_ios,
-                  color: FlutterFlowTheme.of(context).primaryText,
-                  size: 24.0,
-                ),
-                onPressed: () async {
-                  context.safePop();
-                },
-              ),
-              title: Align(
-                alignment: AlignmentDirectional(0.0, 0.0),
-                child: Text(
-                  'Détail de l\'activité',
-                  style: FlutterFlowTheme.of(context).headlineMedium.override(
-                        font: GoogleFonts.interTight(
-                          fontWeight: FlutterFlowTheme.of(context)
-                              .headlineMedium
-                              .fontWeight,
-                          fontStyle: FlutterFlowTheme.of(context)
-                              .headlineMedium
-                              .fontStyle,
-                        ),
-                        fontSize: 22.0,
-                        letterSpacing: 0.0,
-                        fontWeight: FlutterFlowTheme.of(context)
-                            .headlineMedium
-                            .fontWeight,
-                        fontStyle: FlutterFlowTheme.of(context)
-                            .headlineMedium
-                            .fontStyle,
-                      ),
-                ),
-              ),
+            appBar: DemeterAppBar(
+              title: 'Détail de l\'activité',
               actions: [
-                Align(
-                  alignment: AlignmentDirectional(1.0, 0.0),
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      var confirmDialogResponse = await showDialog<bool>(
-                            context: context,
-                            builder: (alertDialogContext) {
-                              return AlertDialog(
-                                title:
-                                    Text('Voulez vous supprimer l\'activité ?'),
-                                content: Text(
-                                    'Si vous supprimez l\'activité elle sera définitivement effacée de l\'application.'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(
-                                        alertDialogContext, false),
-                                    child: Text('Annuler'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(alertDialogContext, true),
-                                    child: Text('Confirmer'),
-                                  ),
-                                ],
-                              );
-                            },
-                          ) ??
-                          false;
-                      if (confirmDialogResponse) {
-                        await widget.activiteref!.delete();
-                      }
-                    },
-                    child: Icon(
-                      Icons.delete_forever,
-                      color: FlutterFlowTheme.of(context).primaryText,
-                      size: 30.0,
-                    ),
-                  ),
+                IconButton(
+                  icon: Icon(Icons.delete_outline,
+                      color: Colors.white.withOpacity(0.9), size: 24),
+                  onPressed: () async {
+                    final confirm = await showDialog<bool>(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            title: const Text('Supprimer l\'activité ?'),
+                            content: const Text(
+                                'Cette action est irréversible.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(ctx, false),
+                                child: const Text('Annuler'),
+                              ),
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(ctx, true),
+                                style: TextButton.styleFrom(
+                                  foregroundColor:
+                                      FlutterFlowTheme.of(context).error,
+                                ),
+                                child: const Text('Supprimer'),
+                              ),
+                            ],
+                          ),
+                        ) ??
+                        false;
+                    if (confirm) await widget.activiteref!.delete();
+                  },
                 ),
               ],
-              centerTitle: true,
-              elevation: 1.0,
             ),
             body: SafeArea(
               top: true,
@@ -258,67 +210,8 @@ class _DetailActivitePageWidgetState extends State<DetailActivitePageWidget> {
                                                   .fontStyle,
                                         ),
                                   ),
-                                  Container(
-                                    height: 24.0,
-                                    decoration: BoxDecoration(
-                                      color: valueOrDefault<Color>(
-                                        () {
-                                          if (detailActivitePageActivitesRecord
-                                                  .statut ==
-                                              'Planifié') {
-                                            return FlutterFlowTheme.of(context)
-                                                .tertiary;
-                                          } else if (detailActivitePageActivitesRecord
-                                                  .statut ==
-                                              'Réalisé') {
-                                            return FlutterFlowTheme.of(context)
-                                                .secondary;
-                                          } else if (detailActivitePageActivitesRecord
-                                                  .statut ==
-                                              'Validé') {
-                                            return FlutterFlowTheme.of(context)
-                                                .success;
-                                          } else {
-                                            return FlutterFlowTheme.of(context)
-                                                .error;
-                                          }
-                                        }(),
-                                        FlutterFlowTheme.of(context).warning,
-                                      ),
-                                      borderRadius: BorderRadius.circular(12.0),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          8.0, 4.0, 8.0, 4.0),
-                                      child: Text(
-                                        valueOrDefault<String>(
-                                          detailActivitePageActivitesRecord
-                                              .statut,
-                                          'statut',
-                                        ),
-                                        style: FlutterFlowTheme.of(context)
-                                            .labelSmall
-                                            .override(
-                                              font: GoogleFonts.inter(
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelSmall
-                                                        .fontStyle,
-                                              ),
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryBackground,
-                                              fontSize: 12.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelSmall
-                                                      .fontStyle,
-                                            ),
-                                      ),
-                                    ),
+                                  StatusBadge.fromString(
+                                    detailActivitePageActivitesRecord.statut,
                                   ),
                                 ],
                               ),
@@ -780,166 +673,18 @@ class _DetailActivitePageWidgetState extends State<DetailActivitePageWidget> {
                             mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Icon(
-                                    Icons.photo_library,
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    size: 20.0,
-                                  ),
-                                  Text(
-                                    'Preuves',
-                                    style: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .override(
-                                          font: GoogleFonts.interTight(
-                                            fontWeight: FontWeight.w600,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleMedium
-                                                    .fontStyle,
-                                          ),
-                                          letterSpacing: 0.0,
-                                          fontWeight: FontWeight.w600,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleMedium
-                                                  .fontStyle,
-                                        ),
-                                  ),
-                                  Expanded(
-                                    child: Align(
-                                      alignment: AlignmentDirectional(1.0, 0.0),
-                                      child: FlutterFlowIconButton(
-                                        borderRadius: 8.0,
-                                        buttonSize: 40.0,
-                                        icon: Icon(
-                                          Icons.photo_camera,
-                                          color: FlutterFlowTheme.of(context)
-                                              .tertiary,
-                                          size: 20.0,
-                                        ),
-                                        onPressed: () async {
-                                          final selectedMedia =
-                                              await selectMediaWithSourceBottomSheet(
-                                            context: context,
-                                            maxHeight: 1000.00,
-                                            allowPhoto: true,
-                                          );
-                                          if (selectedMedia != null &&
-                                              selectedMedia.every((m) =>
-                                                  validateFileFormat(
-                                                      m.storagePath,
-                                                      context))) {
-                                            safeSetState(() => _model
-                                                    .isDataUploading_preuvesActivite =
-                                                true);
-                                            var selectedUploadedFiles =
-                                                <FFUploadedFile>[];
-
-                                            var downloadUrls = <String>[];
-                                            try {
-                                              selectedUploadedFiles =
-                                                  selectedMedia
-                                                      .map(
-                                                          (m) => FFUploadedFile(
-                                                                name: m
-                                                                    .storagePath
-                                                                    .split('/')
-                                                                    .last,
-                                                                bytes: m.bytes,
-                                                                height: m
-                                                                    .dimensions
-                                                                    ?.height,
-                                                                width: m
-                                                                    .dimensions
-                                                                    ?.width,
-                                                                blurHash:
-                                                                    m.blurHash,
-                                                                originalFilename:
-                                                                    m.originalFilename,
-                                                              ))
-                                                      .toList();
-
-                                              downloadUrls = (await Future.wait(
-                                                selectedMedia.map(
-                                                  (m) async => await uploadData(
-                                                      m.storagePath, m.bytes),
-                                                ),
-                                              ))
-                                                  .where((u) => u != null)
-                                                  .map((u) => u!)
-                                                  .toList();
-                                            } finally {
-                                              _model.isDataUploading_preuvesActivite =
-                                                  false;
-                                            }
-                                            if (selectedUploadedFiles.length ==
-                                                    selectedMedia.length &&
-                                                downloadUrls.length ==
-                                                    selectedMedia.length) {
-                                              safeSetState(() {
-                                                _model.uploadedLocalFile_preuvesActivite =
-                                                    selectedUploadedFiles.first;
-                                                _model.uploadedFileUrl_preuvesActivite =
-                                                    downloadUrls.first;
-                                              });
-                                            } else {
-                                              safeSetState(() {});
-                                              return;
-                                            }
-                                          }
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ].divide(SizedBox(width: 8.0)),
-                              ),
-                              Container(
-                                width: double.infinity,
-                                height: 120.0,
-                                child: Builder(
-                                  builder: (context) {
-                                    final imagesIllustration =
-                                        detailActivitePageActivitesRecord
-                                            .photoillustration
-                                            .map((e) => e)
-                                            .toList();
-
-                                    return GridView.builder(
-                                      padding: EdgeInsets.zero,
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 3,
-                                        crossAxisSpacing: 10.0,
-                                        mainAxisSpacing: 10.0,
-                                        childAspectRatio: 1.0,
-                                      ),
-                                      scrollDirection: Axis.vertical,
-                                      itemCount: imagesIllustration.length,
-                                      itemBuilder:
-                                          (context, imagesIllustrationIndex) {
-                                        final imagesIllustrationItem =
-                                            imagesIllustration[
-                                                imagesIllustrationIndex];
-                                        return ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          child: Image.network(
-                                            valueOrDefault<String>(
-                                              imagesIllustrationItem,
-                                              'error',
-                                            ),
-                                            width: 200.0,
-                                            height: 200.0,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
+                              DemeterImagePicker(
+                                label: 'Photos de preuve',
+                                storagePath: 'activites/preuves',
+                                allowMultiple: true,
+                                maxImages: 10,
+                                initialUrls: detailActivitePageActivitesRecord
+                                    .photoillustration,
+                                onChanged: (urls) async {
+                                  await widget.activiteref!.update({
+                                    'photoillustration': urls,
+                                  });
+                                },
                               ),
                             ].divide(SizedBox(height: 12.0)),
                           ),
@@ -1114,20 +859,30 @@ class _DetailActivitePageWidgetState extends State<DetailActivitePageWidget> {
                               ),
                               if ((detailActivitePageActivitesRecord.statut ==
                                       'Planifié') &&
-                                  (valueOrDefault(
-                                          currentUserDocument?.typeCompte,
-                                          '') ==
-                                      'Collaborateur'))
+                                  RbacService.instance.canPerform(
+                                      'execute', 'activite'))
                                 AuthUserStreamWidget(
                                   builder: (context) => Row(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Expanded(
                                         child: FFButtonWidget(
-                                          onPressed: () {
-                                            print('Button pressed ...');
+                                          onPressed: () async {
+                                            await ErrorHandler.instance
+                                                .runFirestore(
+                                              context,
+                                              () => widget.activiteref!.update(
+                                                  createActivitesRecordData(
+                                                statut: 'Réalisé',
+                                                dateExecution:
+                                                    getCurrentTimestamp,
+                                                inCharge: currentUserReference,
+                                              )),
+                                              successMessage:
+                                                  'Activité marquée comme réalisée',
+                                            );
                                           },
-                                          text: 'Valider',
+                                          text: 'Marquer réalisée',
                                           options: FFButtonOptions(
                                             height: 40.0,
                                             padding: EdgeInsets.all(8.0),
@@ -1272,10 +1027,7 @@ class _DetailActivitePageWidgetState extends State<DetailActivitePageWidget> {
                                 ),
                               if ((detailActivitePageActivitesRecord.statut ==
                                       'Réalisé') &&
-                                  (valueOrDefault(
-                                          currentUserDocument?.typeCompte,
-                                          '') ==
-                                      'Patron'))
+                                  RbacService.instance.canValidateActivite)
                                 AuthUserStreamWidget(
                                   builder: (context) => Row(
                                     mainAxisSize: MainAxisSize.max,

@@ -1,6 +1,7 @@
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
@@ -146,7 +147,7 @@ class _ListeParcellesWidgetState extends State<ListeParcellesWidget> {
         body: SafeArea(
           top: true,
           child: StreamBuilder<List<ParcellesRecord>>(
-            stream: queryParcellesRecord(),
+            stream: queryParcellesRecord(limit: 50),
             builder: (context, snapshot) {
               // Customize what your widget looks like when it's loading.
               if (!snapshot.hasData) {
@@ -575,12 +576,24 @@ class _ListeParcellesWidgetState extends State<ListeParcellesWidget> {
                                           child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(8.0),
-                                            child: Image.network(
-                                              containerSpeculationRecord!
-                                                  .illustration,
+                                            child: CachedNetworkImage(
+                                              imageUrl:
+                                                  containerSpeculationRecord!
+                                                      .illustration,
                                               width: double.infinity,
                                               height: double.infinity,
                                               fit: BoxFit.cover,
+                                              placeholder: (_, __) =>
+                                                  Container(
+                                                      color: const Color(
+                                                          0xFFDDE8DA)),
+                                              errorWidget: (_, __, ___) =>
+                                                  Container(
+                                                color: const Color(0xFFDDE8DA),
+                                                child: const Icon(
+                                                    Icons.grass_outlined,
+                                                    color: Color(0xFF4D6755)),
+                                              ),
                                             ),
                                           ),
                                         ),

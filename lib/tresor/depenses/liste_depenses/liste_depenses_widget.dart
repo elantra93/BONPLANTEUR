@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/tresor/depenses/bottom_sheet_depense_rapid/bottom_sheet_depense_rapid_widget.dart';
+import '/widgets/components/components.dart';
 import '/index.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -106,14 +107,14 @@ class _ListeDepensesWidgetState extends State<ListeDepensesWidget> {
         // Customize what your widget looks like when it's loading.
         if (!snapshot.hasData) {
           return Scaffold(
-            backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+            backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
             body: Center(
               child: SizedBox(
-                width: 50.0,
-                height: 50.0,
-                child: SpinKitFadingCube(
-                  color: FlutterFlowTheme.of(context).tertiary,
-                  size: 50.0,
+                width: 40.0,
+                height: 40.0,
+                child: CircularProgressIndicator(
+                  color: FlutterFlowTheme.of(context).primary,
+                  strokeWidth: 3,
                 ),
               ),
             ),
@@ -128,16 +129,9 @@ class _ListeDepensesWidgetState extends State<ListeDepensesWidget> {
           },
           child: Scaffold(
             key: scaffoldKey,
-            backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-            floatingActionButton: FlutterFlowIconButton(
-              borderRadius: 28.0,
-              buttonSize: 56.0,
-              fillColor: FlutterFlowTheme.of(context).tertiary,
-              icon: Icon(
-                Icons.add_rounded,
-                color: FlutterFlowTheme.of(context).primaryBackground,
-                size: 24.0,
-              ),
+            backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: FlutterFlowTheme.of(context).primary,
               onPressed: () async {
                 await showModalBottomSheet(
                   isScrollControlled: true,
@@ -158,40 +152,11 @@ class _ListeDepensesWidgetState extends State<ListeDepensesWidget> {
                   },
                 ).then((value) => safeSetState(() {}));
               },
+              child: const Icon(Icons.add_rounded, color: Colors.white, size: 26),
             ),
-            appBar: AppBar(
-              backgroundColor: FlutterFlowTheme.of(context).secondary,
-              automaticallyImplyLeading: true,
-              leading: FlutterFlowIconButton(
-                borderRadius: 20.0,
-                buttonSize: 40.0,
-                icon: Icon(
-                  Icons.arrow_back_rounded,
-                  color: FlutterFlowTheme.of(context).primaryText,
-                  size: 24.0,
-                ),
-                onPressed: () async {
-                  context.pushNamed(DashboardPageWidget.routeName);
-                },
-              ),
-              title: Text(
-                'Dépenses',
-                style: FlutterFlowTheme.of(context).headlineMedium.override(
-                      font: GoogleFonts.interTight(
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FlutterFlowTheme.of(context)
-                            .headlineMedium
-                            .fontStyle,
-                      ),
-                      letterSpacing: 0.0,
-                      fontWeight: FontWeight.w600,
-                      fontStyle:
-                          FlutterFlowTheme.of(context).headlineMedium.fontStyle,
-                    ),
-              ),
-              actions: [],
-              centerTitle: false,
-              elevation: 0.0,
+            appBar: DemeterAppBar(
+              title: 'Dépenses',
+              onBack: () => context.pushNamed(DashboardPageWidget.routeName),
             ),
             body: SafeArea(
               top: true,

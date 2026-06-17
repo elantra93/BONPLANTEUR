@@ -543,7 +543,7 @@ class _AjouterConsommationStockPageWidgetState
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   StreamBuilder<List<StocksRecord>>(
-                                    stream: queryStocksRecord(),
+                                    stream: queryStocksRecord(limit: 100),
                                     builder: (context, snapshot) {
                                       // Customize what your widget looks like when it's loading.
                                       if (!snapshot.hasData) {
@@ -811,7 +811,7 @@ class _AjouterConsommationStockPageWidgetState
                                   ),
                             ),
                             StreamBuilder<List<CollaborateursRecord>>(
-                              stream: queryCollaborateursRecord(),
+                              stream: queryCollaborateursRecord(limit: 100),
                               builder: (context, snapshot) {
                                 // Customize what your widget looks like when it's loading.
                                 if (!snapshot.hasData) {
@@ -917,7 +917,7 @@ class _AjouterConsommationStockPageWidgetState
                                   ),
                             ),
                             StreamBuilder<List<ActivitesRecord>>(
-                              stream: queryActivitesRecord(),
+                              stream: queryActivitesRecord(limit: 100),
                               builder: (context, snapshot) {
                                 // Customize what your widget looks like when it's loading.
                                 if (!snapshot.hasData) {

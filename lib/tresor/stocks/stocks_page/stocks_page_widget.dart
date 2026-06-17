@@ -154,7 +154,7 @@ class _StocksPageWidgetState extends State<StocksPageWidget> {
           child: Padding(
             padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 100.0),
             child: StreamBuilder<List<StocksRecord>>(
-              stream: queryStocksRecord(),
+              stream: queryStocksRecord(limit: 50),
               builder: (context, snapshot) {
                 // Customize what your widget looks like when it's loading.
                 if (!snapshot.hasData) {

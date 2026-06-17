@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 
@@ -13,5 +14,12 @@ Future initFirebase() async {
             appId: "1:503287044079:web:60fb950924bf2d1f05081a"));
   } else {
     await Firebase.initializeApp();
+
+    // Activer le cache Firestore pour le mode hors ligne.
+    // Le SDK met en cache les lectures et rejoue les écritures automatiquement.
+    FirebaseFirestore.instance.settings = const Settings(
+      persistenceEnabled: true,
+      cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
+    );
   }
 }

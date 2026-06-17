@@ -1,5 +1,7 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/services/rbac_service.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -1363,14 +1365,31 @@ class _DetailsDepenseWidgetState extends State<DetailsDepenseWidget> {
                                         return ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(8.0),
-                                          child: Image.network(
-                                            valueOrDefault<String>(
+                                          child: CachedNetworkImage(
+                                            imageUrl: valueOrDefault<String>(
                                               justificatifsItem,
-                                              '0',
+                                              '',
                                             ),
                                             width: 200.0,
                                             height: 200.0,
                                             fit: BoxFit.cover,
+                                            placeholder: (_, __) => Container(
+                                              color: const Color(0xFFDDE8DA),
+                                              child: const Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  strokeWidth: 2,
+                                                  color: Color(0xFF1B6B3A),
+                                                ),
+                                              ),
+                                            ),
+                                            errorWidget: (_, __, ___) =>
+                                                Container(
+                                              color: const Color(0xFFDDE8DA),
+                                              child: const Icon(
+                                                  Icons.broken_image_outlined,
+                                                  color: Color(0xFF4D6755)),
+                                            ),
                                           ),
                                         );
                                       }),
@@ -1383,8 +1402,7 @@ class _DetailsDepenseWidgetState extends State<DetailsDepenseWidget> {
                         ),
                       ),
                     ),
-                    if (valueOrDefault(currentUserDocument?.typeCompte, '') ==
-                        'patron')
+                    if (RbacService.instance.canValidateDepense)
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(
                             16.0, 0.0, 16.0, 0.0),

@@ -1,5 +1,6 @@
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
@@ -71,7 +72,7 @@ class _ListeMaterielWidgetState extends State<ListeMaterielWidget> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<MaterielsRecord>>(
-      stream: queryMaterielsRecord(),
+      stream: queryMaterielsRecord(limit: 50),
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
         if (!snapshot.hasData) {
@@ -226,19 +227,27 @@ class _ListeMaterielWidgetState extends State<ListeMaterielWidget> {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           16.0),
-                                                  child: Image.network(
-                                                    'https://images.unsplash.com/photo-1709229329269-08a4a7de2562?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzM1MTI2MDR8&ixlib=rb-4.1.0&q=80&w=1080',
+                                                  child: CachedNetworkImage(
+                                                    imageUrl:
+                                                        'https://images.unsplash.com/photo-1709229329269-08a4a7de2562?w=800',
                                                     width: double.infinity,
                                                     height: 160.0,
                                                     fit: BoxFit.cover,
-                                                    errorBuilder: (context,
-                                                            error,
-                                                            stackTrace) =>
-                                                        Image.asset(
-                                                      'assets/images/error_image.png',
-                                                      width: double.infinity,
-                                                      height: 160.0,
-                                                      fit: BoxFit.cover,
+                                                    placeholder: (_, __) =>
+                                                        Container(
+                                                            color: const Color(
+                                                                0xFFDDE8DA)),
+                                                    errorWidget:
+                                                        (_, __, ___) =>
+                                                            Container(
+                                                      color: const Color(
+                                                          0xFFDDE8DA),
+                                                      child: const Icon(
+                                                          Icons
+                                                              .agriculture_outlined,
+                                                          color: Color(
+                                                              0xFF4D6755),
+                                                          size: 40),
                                                     ),
                                                   ),
                                                 ),

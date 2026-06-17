@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -170,7 +171,7 @@ class _ListeTeamWidgetState extends State<ListeTeamWidget> {
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0.0, 1.0, 0.0, 0.0),
                 child: StreamBuilder<List<CollaborateursRecord>>(
-                  stream: queryCollaborateursRecord(),
+                  stream: queryCollaborateursRecord(limit: 50),
                   builder: (context, snapshot) {
                     // Customize what your widget looks like when it's loading.
                     if (!snapshot.hasData) {
@@ -241,12 +242,26 @@ class _ListeTeamWidgetState extends State<ListeTeamWidget> {
                                       child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(44.0),
-                                        child: Image.network(
-                                          listViewCollaborateursRecord
-                                              .photoworker,
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                              listViewCollaborateursRecord
+                                                  .photoworker,
                                           width: 44.0,
                                           height: 44.0,
                                           fit: BoxFit.cover,
+                                          placeholder: (_, __) => const CircleAvatar(
+                                            backgroundColor: Color(0xFFDDE8DA),
+                                            child: Icon(Icons.person,
+                                                color: Color(0xFF4D6755),
+                                                size: 20),
+                                          ),
+                                          errorWidget: (_, __, ___) =>
+                                              const CircleAvatar(
+                                            backgroundColor: Color(0xFFDDE8DA),
+                                            child: Icon(Icons.person,
+                                                color: Color(0xFF4D6755),
+                                                size: 20),
+                                          ),
                                         ),
                                       ),
                                     ),

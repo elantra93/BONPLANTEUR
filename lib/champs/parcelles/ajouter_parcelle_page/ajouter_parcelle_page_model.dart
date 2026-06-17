@@ -1,5 +1,6 @@
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/utils/validators.dart';
 import 'ajouter_parcelle_page_widget.dart' show AjouterParcellePageWidget;
 import 'package:flutter/material.dart';
 
@@ -38,7 +39,19 @@ class AjouterParcellePageModel
   String? Function(BuildContext, String?)? rendementTextControllerValidator;
 
   @override
-  void initState(BuildContext context) {}
+  void initState(BuildContext context) {
+    nomParcelleTextControllerValidator = V.compose([
+      V.required('Le nom de la parcelle est obligatoire'),
+      V.minLength(2),
+    ]);
+    surfaceTextControllerValidator = V.compose([
+      V.required('La surface est obligatoire'),
+      V.superficie(),
+    ]);
+    budgetTextControllerValidator = V.positiveNumber('Budget invalide');
+    rendementTextControllerValidator =
+        V.positiveNumber('Rendement attendu invalide');
+  }
 
   @override
   void dispose() {

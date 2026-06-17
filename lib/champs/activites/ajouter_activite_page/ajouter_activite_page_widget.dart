@@ -1,6 +1,7 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/date_picker_texfield_widget.dart';
+import '/services/error_handler.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -819,45 +820,36 @@ class _AjouterActivitePageWidgetState extends State<AjouterActivitePageWidget> {
                         ),
                         FFButtonWidget(
                           onPressed: () async {
-                            await ActivitesRecord.collection
-                                .doc()
-                                .set(createActivitesRecordData(
-                                  type: _model.categorieValue,
-                                  datePrevue:
-                                      _model.datePickerTexfieldModel.datePicked,
-                                  createdBy: currentUserReference,
-                                  libelleActivite:
-                                      _model.libelleActiviteTextController.text,
-                                  description:
-                                      _model.consignesTextController.text,
-                                  dateCreation: getCurrentTimestamp,
-                                  statut: 'planifié',
-                                  exploitationRef:
-                                      FFAppState().CurrentExploitationId,
-                                  parcelleRef: functions
-                                      .getDocRefFromID(_model.dropDownValue),
-                                  inCharge: functions.getWorkerRefFromID(
-                                      _model.affectationValue),
-                                  nomExploitation: _model.dropDownValue,
-                                ));
-                            await showDialog(
-                              context: context,
-                              builder: (alertDialogContext) {
-                                return AlertDialog(
-                                  title: Text('Nouvelle activité créée'),
-                                  content: Text(
-                                      'La nouvelle activitée a été créée avec succès, vous la retrouverez dans le tableau de bord des activités. Vlus pourrez toujours modifier les détails de l\'activité.'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(alertDialogContext),
-                                      child: Text('Ok'),
-                                    ),
-                                  ],
-                                );
-                              },
+                            if (!_model.formKey.currentState!.validate()) {
+                              return;
+                            }
+                            final ok = await ErrorHandler.instance.runFirestore(
+                              context,
+                              () => ActivitesRecord.collection
+                                  .doc()
+                                  .set(createActivitesRecordData(
+                                    type: _model.categorieValue,
+                                    datePrevue: _model
+                                        .datePickerTexfieldModel.datePicked,
+                                    createdBy: currentUserReference,
+                                    libelleActivite: _model
+                                        .libelleActiviteTextController.text,
+                                    description:
+                                        _model.consignesTextController.text,
+                                    dateCreation: getCurrentTimestamp,
+                                    statut: 'planifié',
+                                    exploitationRef:
+                                        FFAppState().CurrentExploitationId,
+                                    parcelleRef: functions
+                                        .getDocRefFromID(_model.dropDownValue),
+                                    inCharge: functions.getWorkerRefFromID(
+                                        _model.affectationValue),
+                                    nomExploitation: _model.dropDownValue,
+                                  )),
+                              operation: 'la création de l\'activité',
+                              successMessage: 'Activité créée avec succès',
                             );
-                            context.safePop();
+                            if (ok && context.mounted) context.safePop();
                           },
                           text: 'Créer l\'activité',
                           options: FFButtonOptions(

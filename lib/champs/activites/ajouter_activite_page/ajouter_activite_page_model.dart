@@ -2,6 +2,7 @@ import '/backend/backend.dart';
 import '/components/date_picker_texfield_widget.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/utils/validators.dart';
 import '/index.dart';
 import 'ajouter_activite_page_widget.dart' show AjouterActivitePageWidget;
 import 'package:flutter/material.dart';
@@ -37,6 +38,10 @@ class AjouterActivitePageModel
   void initState(BuildContext context) {
     datePickerTexfieldModel =
         createModel(context, () => DatePickerTexfieldModel());
+    libelleActiviteTextControllerValidator = V.compose([
+      V.required('Le libellé de l\'activité est obligatoire'),
+      V.minLength(3),
+    ]);
   }
 
   @override

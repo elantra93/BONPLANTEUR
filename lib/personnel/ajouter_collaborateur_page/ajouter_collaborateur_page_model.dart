@@ -30,15 +30,6 @@ class AjouterCollaborateurPageModel
   TextEditingController? contactTextController;
   String? Function(BuildContext, String?)? contactTextControllerValidator;
   DateTime? datePicked2;
-  bool isDataUploading_uploadDataXab = false;
-  FFUploadedFile uploadedLocalFile_uploadDataXab =
-      FFUploadedFile(bytes: Uint8List.fromList([]), originalFilename: '');
-  String uploadedFileUrl_uploadDataXab = '';
-
-  bool isDataUploading_uploadDataTgb = false;
-  FFUploadedFile uploadedLocalFile_uploadDataTgb =
-      FFUploadedFile(bytes: Uint8List.fromList([]), originalFilename: '');
-  String uploadedFileUrl_uploadDataTgb = '';
 
   @override
   void initState(BuildContext context) {}

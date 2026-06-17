@@ -1,4 +1,5 @@
 import '/backend/backend.dart';
+import '/services/error_handler.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -1259,55 +1260,54 @@ class _AjouterParcellePageWidgetState extends State<AjouterParcellePageWidget> {
                               24.0, 0.0, 24.0, 0.0),
                           child: FFButtonWidget(
                             onPressed: () async {
-                              await ParcellesRecord.collection
-                                  .doc()
-                                  .set(createParcellesRecordData(
-                                    nomparcelle:
-                                        _model.nomParcelleTextController.text,
-                                    superficieparcelle: valueOrDefault<double>(
-                                      functions.formatDecimal(
-                                          _model.surfaceTextController.text),
-                                      0.0,
-                                    ),
-                                    speculationparcelle: _model.cultureValue,
-                                    pleinCiel: _model.switchSerreValue,
-                                    horsSol: false,
-                                    dateCreation: getCurrentTimestamp,
-                                    dateSemis: _model.datePicked,
-                                    budgetParcelle: int.tryParse(
-                                        _model.budgetTextController.text),
-                                    rendementAttendu: functions.formatDecimal(
-                                        _model.rendementTextController.text),
-                                    parcelleActive: true,
-                                    refExploitation: widget.exploitationId,
-                                  ));
-
-                              await widget.exploitationId!.update({
-                                ...mapToFirestore(
-                                  {
-                                    'superficieExploite': FieldValue.increment(
-                                        double.parse(
-                                            _model.surfaceTextController.text)),
-                                  },
-                                ),
-                              });
-                              await showDialog(
-                                context: context,
-                                builder: (alertDialogContext) {
-                                  return AlertDialog(
-                                    title: Text('Nouvelle parcelle'),
-                                    content: Text(
-                                        'Votre parcelle ${_model.nomParcelleTextController.text} a été correctement ajoutée à l\'exploitation ${_model.exploitationTextController.text}'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(alertDialogContext),
-                                        child: Text('Ok'),
-                                      ),
-                                    ],
-                                  );
+                              if (!_model.formKey.currentState!.validate()) {
+                                return;
+                              }
+                              final ok = await ErrorHandler.instance
+                                  .runFirestore(
+                                context,
+                                () async {
+                                  await ParcellesRecord.collection
+                                      .doc()
+                                      .set(createParcellesRecordData(
+                                        nomparcelle: _model
+                                            .nomParcelleTextController.text,
+                                        superficieparcelle:
+                                            valueOrDefault<double>(
+                                          functions.formatDecimal(_model
+                                              .surfaceTextController.text),
+                                          0.0,
+                                        ),
+                                        speculationparcelle:
+                                            _model.cultureValue,
+                                        pleinCiel: _model.switchSerreValue,
+                                        horsSol: false,
+                                        dateCreation: getCurrentTimestamp,
+                                        dateSemis: _model.datePicked,
+                                        budgetParcelle: int.tryParse(
+                                            _model.budgetTextController.text),
+                                        rendementAttendu:
+                                            functions.formatDecimal(_model
+                                                .rendementTextController.text),
+                                        parcelleActive: true,
+                                        refExploitation: widget.exploitationId,
+                                      ));
+                                  final surf = double.tryParse(
+                                      _model.surfaceTextController.text);
+                                  if (surf != null && surf > 0) {
+                                    await widget.exploitationId!.update({
+                                      ...mapToFirestore({
+                                        'superficieExploite':
+                                            FieldValue.increment(surf),
+                                      }),
+                                    });
+                                  }
                                 },
+                                operation: 'l\'ajout de la parcelle',
+                                successMessage:
+                                    'Parcelle ${_model.nomParcelleTextController.text} ajoutée avec succès',
                               );
+                              if (ok && context.mounted) context.safePop();
                             },
                             text: 'Ajouter la parcelle',
                             options: FFButtonOptions(

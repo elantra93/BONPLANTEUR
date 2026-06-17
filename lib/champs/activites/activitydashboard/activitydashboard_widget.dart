@@ -1,5 +1,6 @@
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +103,7 @@ class _ActivitydashboardWidgetState extends State<ActivitydashboardWidget> {
               ),
             ),
             StreamBuilder<List<ActivitesRecord>>(
-              stream: queryActivitesRecord(),
+              stream: queryActivitesRecord(limit: 50),
               builder: (context, snapshot) {
                 // Customize what your widget looks like when it's loading.
                 if (!snapshot.hasData) {
@@ -163,7 +164,7 @@ class _ActivitydashboardWidgetState extends State<ActivitydashboardWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             StreamBuilder<List<CollaborateursRecord>>(
-                              stream: queryCollaborateursRecord(),
+                              stream: queryCollaborateursRecord(limit: 100),
                               builder: (context, snapshot) {
                                 // Customize what your widget looks like when it's loading.
                                 if (!snapshot.hasData) {
@@ -210,11 +211,24 @@ class _ActivitydashboardWidgetState extends State<ActivitydashboardWidget> {
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(40.0),
-                                          child: Image.network(
-                                            rowCollaborateursRecord.photoworker,
+                                          child: CachedNetworkImage(
+                                            imageUrl:
+                                                rowCollaborateursRecord
+                                                    .photoworker,
                                             width: 60.0,
                                             height: 60.0,
                                             fit: BoxFit.cover,
+                                            placeholder: (_, __) => Container(
+                                              color: const Color(0xFFDDE8DA),
+                                              child: const Icon(Icons.person,
+                                                  color: Color(0xFF4D6755)),
+                                            ),
+                                            errorWidget: (_, __, ___) =>
+                                                Container(
+                                              color: const Color(0xFFDDE8DA),
+                                              child: const Icon(Icons.person,
+                                                  color: Color(0xFF4D6755)),
+                                            ),
                                           ),
                                         ),
                                       ),

@@ -1,6 +1,6 @@
-import '/components/imagepicker1_widget.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/utils/validators.dart';
 import '/index.dart';
 import 'ajouter_depense_page_widget.dart' show AjouterDepensePageWidget;
 import 'package:flutter/material.dart';
@@ -52,12 +52,16 @@ class AjouterDepensePageModel
   TextEditingController? commentaireDepenseTextController;
   String? Function(BuildContext, String?)?
       commentaireDepenseTextControllerValidator;
-  // Model for Imagepicker1 component.
-  late Imagepicker1Model imagepicker1Model;
-
   @override
   void initState(BuildContext context) {
-    imagepicker1Model = createModel(context, () => Imagepicker1Model());
+    montantdepenseTextControllerValidator =
+        V.compose([V.required('Le montant est obligatoire'), V.amount()]);
+    libelleDepenseTextControllerValidator =
+        V.compose([V.required('Le libellé est obligatoire'), V.minLength(3)]);
+    beneficiaireTextControllerValidator =
+        V.required('Le bénéficiaire est obligatoire');
+    dateTextControllerValidator =
+        V.compose([V.required('La date est obligatoire'), V.dateJJMMAAAA()]);
   }
 
   @override
@@ -76,7 +80,5 @@ class AjouterDepensePageModel
 
     commentaireDepenseFocusNode?.dispose();
     commentaireDepenseTextController?.dispose();
-
-    imagepicker1Model.dispose();
   }
 }

@@ -32,9 +32,6 @@ class AjouterMaterielModel extends FlutterFlowModel<AjouterMaterielWidget> {
   FormFieldController<String>? dropDownValueController2;
   // State field(s) for Switch widget.
   bool? switchValue;
-  bool isDataUploading_photoMateriel = false;
-  List<FFUploadedFile> uploadedLocalFiles_photoMateriel = [];
-  List<String> uploadedFileUrls_photoMateriel = [];
 
   @override
   void initState(BuildContext context) {}

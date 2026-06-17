@@ -1,6 +1,7 @@
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
@@ -189,11 +190,20 @@ class _DetailMaterielWidgetState extends State<DetailMaterielWidget> {
                               children: [
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(16.0),
-                                  child: Image.network(
-                                    'https://images.unsplash.com/photo-1587916850012-13919928ef69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzM1MTI2NTR8&ixlib=rb-4.1.0&q=80&w=1080',
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                        'https://images.unsplash.com/photo-1587916850012-13919928ef69?w=800',
                                     width: double.infinity,
                                     height: double.infinity,
                                     fit: BoxFit.cover,
+                                    placeholder: (_, __) => Container(
+                                        color: const Color(0xFFDDE8DA)),
+                                    errorWidget: (_, __, ___) => Container(
+                                        color: const Color(0xFFDDE8DA),
+                                        child: const Icon(
+                                            Icons.agriculture_outlined,
+                                            color: Color(0xFF4D6755),
+                                            size: 40)),
                                   ),
                                 ),
                                 Container(

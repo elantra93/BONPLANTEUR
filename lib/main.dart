@@ -11,6 +11,9 @@ import 'backend/firebase/firebase_config.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
+import '/services/connectivity_service.dart';
+import '/services/offline_service.dart';
+import '/widgets/offline_banner.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'index.dart';
 
@@ -20,16 +23,24 @@ void main() async {
   usePathUrlStrategy();
 
   await initFirebase();
-
   await FlutterFlowTheme.initialize();
 
-  final appState = FFAppState(); // Initialize FFAppState
+  // Initialiser les services offline
+  await OfflineService.instance.init();
+  ConnectivityService.instance.startMonitoring();
+
+  final appState = FFAppState();
   await appState.initializePersistedState();
 
-  runApp(ChangeNotifierProvider(
-    create: (context) => appState,
-    child: MyApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: appState),
+        ChangeNotifierProvider.value(value: ConnectivityService.instance),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -176,7 +187,8 @@ class _NavBarPageState extends State<NavBarPage> {
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
 
-    return Scaffold(
+    return OfflineBanner(
+      child: Scaffold(
       resizeToAvoidBottomInset: !widget.disableResizeToAvoidBottomInset,
       body: _currentPage ?? tabs[_currentPageName],
       bottomNavigationBar: BottomNavigationBar(
@@ -215,6 +227,7 @@ class _NavBarPageState extends State<NavBarPage> {
           )
         ],
       ),
-    );
+    ),   // Scaffold
+    );   // OfflineBanner
   }
 }

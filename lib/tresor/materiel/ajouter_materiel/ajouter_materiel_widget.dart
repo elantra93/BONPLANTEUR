@@ -1,12 +1,11 @@
 import '/backend/backend.dart';
-import '/backend/firebase_storage/storage.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
-import '/flutter_flow/upload_data.dart';
+import '/widgets/components/components.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -58,6 +57,7 @@ class _AjouterMaterielWidgetState extends State<AjouterMaterielWidget> {
   late AjouterMaterielModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  List<String> _photoUrls = [];
 
   @override
   void initState() {
@@ -1384,139 +1384,15 @@ class _AjouterMaterielWidgetState extends State<AjouterMaterielWidget> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      final selectedMedia = await selectMedia(
-                        mediaSource: MediaSource.photoGallery,
-                        multiImage: true,
-                      );
-                      if (selectedMedia != null &&
-                          selectedMedia.every((m) =>
-                              validateFileFormat(m.storagePath, context))) {
-                        safeSetState(
-                            () => _model.isDataUploading_photoMateriel = true);
-                        var selectedUploadedFiles = <FFUploadedFile>[];
-
-                        var downloadUrls = <String>[];
-                        try {
-                          showUploadMessage(
-                            context,
-                            'Uploading file...',
-                            showLoading: true,
-                          );
-                          selectedUploadedFiles = selectedMedia
-                              .map((m) => FFUploadedFile(
-                                    name: m.storagePath.split('/').last,
-                                    bytes: m.bytes,
-                                    height: m.dimensions?.height,
-                                    width: m.dimensions?.width,
-                                    blurHash: m.blurHash,
-                                    originalFilename: m.originalFilename,
-                                  ))
-                              .toList();
-
-                          downloadUrls = (await Future.wait(
-                            selectedMedia.map(
-                              (m) async =>
-                                  await uploadData(m.storagePath, m.bytes),
-                            ),
-                          ))
-                              .where((u) => u != null)
-                              .map((u) => u!)
-                              .toList();
-                        } finally {
-                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                          _model.isDataUploading_photoMateriel = false;
-                        }
-                        if (selectedUploadedFiles.length ==
-                                selectedMedia.length &&
-                            downloadUrls.length == selectedMedia.length) {
-                          safeSetState(() {
-                            _model.uploadedLocalFiles_photoMateriel =
-                                selectedUploadedFiles;
-                            _model.uploadedFileUrls_photoMateriel =
-                                downloadUrls;
-                          });
-                          showUploadMessage(context, 'Success!');
-                        } else {
-                          safeSetState(() {});
-                          showUploadMessage(context, 'Failed to upload data');
-                          return;
-                        }
-                      }
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 8.0,
-                            color: Color(0x1A000000),
-                            offset: Offset(
-                              0.0,
-                              2.0,
-                            ),
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(16.0),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Container(
-                                  width: 36.0,
-                                  height: 36.0,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFFF3E5F5),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  child: Align(
-                                    alignment: AlignmentDirectional(0.0, 0.0),
-                                    child: Icon(
-                                      Icons.photo_library_outlined,
-                                      color: Colors.purple,
-                                      size: 20.0,
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  'Photos du matériel',
-                                  style: FlutterFlowTheme.of(context)
-                                      .titleSmall
-                                      .override(
-                                        font: GoogleFonts.interTight(
-                                          fontWeight: FontWeight.bold,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleSmall
-                                                  .fontStyle,
-                                        ),
-                                        color: Color(0xFFFF1A1A),
-                                        letterSpacing: 0.0,
-                                        fontWeight: FontWeight.bold,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .titleSmall
-                                            .fontStyle,
-                                      ),
-                                ),
-                              ].divide(SizedBox(width: 8.0)),
-                            ),
-                          ].divide(SizedBox(height: 12.0)),
-                        ),
-                      ),
-                    ),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
+                  child: DemeterImagePicker(
+                    label: 'Photos du matériel',
+                    storagePath: 'materiels/photos',
+                    allowMultiple: true,
+                    maxImages: 8,
+                    onChanged: (urls) =>
+                        safeSetState(() => _photoUrls = urls),
                   ),
                 ),
                 FFButtonWidget(
@@ -1548,8 +1424,7 @@ class _AjouterMaterielWidgetState extends State<AjouterMaterielWidget> {
                       ),
                       ...mapToFirestore(
                         {
-                          'PhotosMateriel':
-                              _model.uploadedFileUrls_photoMateriel,
+                          'PhotosMateriel': _photoUrls,
                         },
                       ),
                     });

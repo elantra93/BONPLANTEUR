@@ -1,4 +1,3 @@
-import '/components/imagepicker1_widget.dart';
 import '/components/text_field_widget.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
@@ -24,23 +23,15 @@ class BottomSheetDepenseRapidModel
   // State field(s) for DropDownActivite widget.
   List<String>? dropDownActiviteValue;
   FormFieldController<List<String>>? dropDownActiviteValueController;
-  // Model for Imagepicker1 component.
-  late Imagepicker1Model imagepicker1Model;
-  bool isDataUploading_justifDepense = false;
-  List<FFUploadedFile> uploadedLocalFiles_justifDepense = [];
-  List<String> uploadedFileUrls_justifDepense = [];
-
   @override
   void initState(BuildContext context) {
     montantModel = createModel(context, () => TextFieldModel());
     noteRapideModel = createModel(context, () => TextFieldModel());
-    imagepicker1Model = createModel(context, () => Imagepicker1Model());
   }
 
   @override
   void dispose() {
     montantModel.dispose();
     noteRapideModel.dispose();
-    imagepicker1Model.dispose();
   }
 }

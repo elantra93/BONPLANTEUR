@@ -6,10 +6,6 @@ class DetailActivitePageModel
     extends FlutterFlowModel<DetailActivitePageWidget> {
   ///  State fields for stateful widgets in this page.
 
-  bool isDataUploading_preuvesActivite = false;
-  FFUploadedFile uploadedLocalFile_preuvesActivite =
-      FFUploadedFile(bytes: Uint8List.fromList([]), originalFilename: '');
-  String uploadedFileUrl_preuvesActivite = '';
 
   @override
   void initState(BuildContext context) {}

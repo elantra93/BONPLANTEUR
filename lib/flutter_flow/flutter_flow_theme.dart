@@ -148,26 +148,27 @@ class LightModeTheme extends FlutterFlowTheme {
   @Deprecated('Use tertiary instead')
   Color get tertiaryColor => tertiary;
 
-  late Color primary = const Color(0xFF4B39EF);
-  late Color secondary = const Color(0xFF39D2C0);
-  late Color tertiary = const Color(0xFFEE8B60);
-  late Color alternate = const Color(0xFFE0E3E7);
-  late Color primaryText = const Color(0xFF14181B);
-  late Color secondaryText = const Color(0xFF57636C);
-  late Color primaryBackground = const Color(0xFFF1F4F8);
+  // DEMETER Agricultural Color Palette
+  late Color primary = const Color(0xFF1B6B3A);
+  late Color secondary = const Color(0xFFE8A217);
+  late Color tertiary = const Color(0xFF7B5E3A);
+  late Color alternate = const Color(0xFFDDE8DA);
+  late Color primaryText = const Color(0xFF0D1F14);
+  late Color secondaryText = const Color(0xFF4D6755);
+  late Color primaryBackground = const Color(0xFFF2F7F3);
   late Color secondaryBackground = const Color(0xFFFFFFFF);
-  late Color accent1 = const Color(0x4C4B39EF);
-  late Color accent2 = const Color(0x4D39D2C0);
-  late Color accent3 = const Color(0x4DEE8B60);
+  late Color accent1 = const Color(0x4C1B6B3A);
+  late Color accent2 = const Color(0x4DE8A217);
+  late Color accent3 = const Color(0x4D7B5E3A);
   late Color accent4 = const Color(0xCCFFFFFF);
-  late Color success = const Color(0xFF249689);
-  late Color warning = const Color(0xFFF9CF58);
-  late Color error = const Color(0xFFFF5963);
-  late Color info = const Color(0xFFFFFFFF);
+  late Color success = const Color(0xFF2E9050);
+  late Color warning = const Color(0xFFE8A217);
+  late Color error = const Color(0xFFCF4343);
+  late Color info = const Color(0xFF2196F3);
 
   late Color onSecondary = const Color(0xFFFFFFFF);
-  late Color onError = const Color(0xFFFF5963);
-  late Color onPrimary = const Color(0xFF3071B6);
+  late Color onError = const Color(0xFFFFFFFF);
+  late Color onPrimary = const Color(0xFFFFFFFF);
 }
 
 abstract class Typography {
@@ -338,26 +339,27 @@ class DarkModeTheme extends FlutterFlowTheme {
   @Deprecated('Use tertiary instead')
   Color get tertiaryColor => tertiary;
 
-  late Color primary = const Color(0xFF4B39EF);
-  late Color secondary = const Color(0xFF39D2C0);
-  late Color tertiary = const Color(0xFFEE8B60);
-  late Color alternate = const Color(0xFF262D34);
-  late Color primaryText = const Color(0xFFFFFFFF);
-  late Color secondaryText = const Color(0xFF95A1AC);
-  late Color primaryBackground = const Color(0xFF1D2428);
-  late Color secondaryBackground = const Color(0xFF14181B);
-  late Color accent1 = const Color(0x4C4B39EF);
-  late Color accent2 = const Color(0x4D39D2C0);
-  late Color accent3 = const Color(0x4DEE8B60);
-  late Color accent4 = const Color(0xB2262D34);
-  late Color success = const Color(0xFF249689);
-  late Color warning = const Color(0xFFF9CF58);
-  late Color error = const Color(0xFFFF5963);
-  late Color info = const Color(0xFFFFFFFF);
+  // DEMETER Dark Mode Agricultural Palette
+  late Color primary = const Color(0xFF4CAF6A);
+  late Color secondary = const Color(0xFFFFCA47);
+  late Color tertiary = const Color(0xFFA07B57);
+  late Color alternate = const Color(0xFF1D2E1F);
+  late Color primaryText = const Color(0xFFE8F5EB);
+  late Color secondaryText = const Color(0xFF7CAF8A);
+  late Color primaryBackground = const Color(0xFF0D1B10);
+  late Color secondaryBackground = const Color(0xFF162819);
+  late Color accent1 = const Color(0x4C4CAF6A);
+  late Color accent2 = const Color(0x4DFFCA47);
+  late Color accent3 = const Color(0x4DA07B57);
+  late Color accent4 = const Color(0xB21D2E1F);
+  late Color success = const Color(0xFF2E9050);
+  late Color warning = const Color(0xFFE8A217);
+  late Color error = const Color(0xFFCF4343);
+  late Color info = const Color(0xFF2196F3);
 
   late Color onSecondary = const Color(0xFFFFFFFF);
-  late Color onError = const Color(0xFFFF5963);
-  late Color onPrimary = const Color(0xFF3071B6);
+  late Color onError = const Color(0xFFFFFFFF);
+  late Color onPrimary = const Color(0xFFFFFFFF);
 }
 
 class FFDesignTokens {

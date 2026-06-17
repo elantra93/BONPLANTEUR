@@ -1,15 +1,14 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/backend/firebase_storage/storage.dart';
-import '/components/imagepicker1_widget.dart';
+import '/services/rbac_service.dart';
 import '/components/text_field_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
-import '/flutter_flow/upload_data.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import '/widgets/components/components.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -70,6 +69,7 @@ class BottomSheetDepenseRapidWidget extends StatefulWidget {
 class _BottomSheetDepenseRapidWidgetState
     extends State<BottomSheetDepenseRapidWidget> {
   late BottomSheetDepenseRapidModel _model;
+  List<String> _justifUrls = [];
 
   @override
   void setState(VoidCallback callback) {
@@ -974,77 +974,13 @@ class _BottomSheetDepenseRapidWidgetState
                       );
                     },
                   ),
-                  InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      final selectedMedia = await selectMedia(
-                        imageQuality: 94,
-                        mediaSource: MediaSource.photoGallery,
-                        multiImage: true,
-                      );
-                      if (selectedMedia != null &&
-                          selectedMedia.every((m) =>
-                              validateFileFormat(m.storagePath, context))) {
-                        safeSetState(
-                            () => _model.isDataUploading_justifDepense = true);
-                        var selectedUploadedFiles = <FFUploadedFile>[];
-
-                        var downloadUrls = <String>[];
-                        try {
-                          showUploadMessage(
-                            context,
-                            'Uploading file...',
-                            showLoading: true,
-                          );
-                          selectedUploadedFiles = selectedMedia
-                              .map((m) => FFUploadedFile(
-                                    name: m.storagePath.split('/').last,
-                                    bytes: m.bytes,
-                                    height: m.dimensions?.height,
-                                    width: m.dimensions?.width,
-                                    blurHash: m.blurHash,
-                                    originalFilename: m.originalFilename,
-                                  ))
-                              .toList();
-
-                          downloadUrls = (await Future.wait(
-                            selectedMedia.map(
-                              (m) async =>
-                                  await uploadData(m.storagePath, m.bytes),
-                            ),
-                          ))
-                              .where((u) => u != null)
-                              .map((u) => u!)
-                              .toList();
-                        } finally {
-                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                          _model.isDataUploading_justifDepense = false;
-                        }
-                        if (selectedUploadedFiles.length ==
-                                selectedMedia.length &&
-                            downloadUrls.length == selectedMedia.length) {
-                          safeSetState(() {
-                            _model.uploadedLocalFiles_justifDepense =
-                                selectedUploadedFiles;
-                            _model.uploadedFileUrls_justifDepense =
-                                downloadUrls;
-                          });
-                          showUploadMessage(context, 'Success!');
-                        } else {
-                          safeSetState(() {});
-                          showUploadMessage(context, 'Failed to upload data');
-                          return;
-                        }
-                      }
-                    },
-                    child: wrapWithModel(
-                      model: _model.imagepicker1Model,
-                      updateCallback: () => safeSetState(() {}),
-                      child: Imagepicker1Widget(),
-                    ),
+                  DemeterImagePicker(
+                    label: 'Justificatif (facture / reçu)',
+                    storagePath: 'depenses/justificatifs',
+                    allowMultiple: true,
+                    maxImages: 5,
+                    onChanged: (urls) =>
+                        safeSetState(() => _justifUrls = urls),
                   ),
                   Padding(
                     padding:
@@ -1055,32 +991,33 @@ class _BottomSheetDepenseRapidWidgetState
                       ),
                       child: FFButtonWidget(
                         onPressed: () async {
-                          await DepensesRecord.collection
-                              .doc()
-                              .set(createDepensesRecordData(
-                                montant: double.tryParse(_model
-                                    .montantModel.inputTextController.text),
-                                categorie: widget.selectedCategory,
-                                affecteeA: _model.dropdownCollaborateurValue,
-                                exploitationRef: functions
-                                    .getExploitationRef(valueOrDefault<String>(
-                                  FFAppState().CurrentExploitationId?.id,
-                                  '0',
-                                )),
-                                libelleDepense: _model
-                                    .noteRapideModel.inputTextController.text,
-                                statut: valueOrDefault<String>(
-                                  valueOrDefault(
-                                              currentUserDocument?.typeCompte,
-                                              '') !=
-                                          'Patron'
-                                      ? 'demande'
-                                      : 'Validé',
-                                  'demande',
-                                ),
-                                validateur: 'NoOne',
-                                autorisation: 'En attente',
-                              ));
+                          final newRef = DepensesRecord.collection.doc();
+                          await newRef.set(createDepensesRecordData(
+                            montant: double.tryParse(_model
+                                .montantModel.inputTextController.text),
+                            categorie: widget.selectedCategory,
+                            affecteeA: _model.dropdownCollaborateurValue,
+                            exploitationRef: functions
+                                .getExploitationRef(valueOrDefault<String>(
+                              FFAppState().CurrentExploitationId?.id,
+                              '0',
+                            )),
+                            libelleDepense: _model
+                                .noteRapideModel.inputTextController.text,
+                            statut: RbacService.instance.canValidateDepense
+                                ? 'Validé'
+                                : 'demande',
+                            validateur: 'NoOne',
+                            autorisation: 'En attente',
+                            justificatifUrl: _justifUrls.isNotEmpty
+                                ? _justifUrls.first
+                                : null,
+                          ));
+                          if (_justifUrls.isNotEmpty) {
+                            await newRef.update({
+                              'Justif_depense': _justifUrls,
+                            });
+                          }
 
                           context.pushNamed(DashboardPageWidget.routeName);
                         },

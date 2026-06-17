@@ -1,5 +1,7 @@
 import '/backend/backend.dart';
-import '/components/imagepicker1_widget.dart';
+import '/services/error_handler.dart';
+import '/services/image_service.dart';
+import '/widgets/components/components.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -59,6 +61,7 @@ class _AjouterDepensePageWidgetState extends State<AjouterDepensePageWidget> {
   late AjouterDepensePageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  List<String> _justifUrls = [];
 
   @override
   void initState() {
@@ -395,7 +398,7 @@ class _AjouterDepensePageWidgetState extends State<AjouterDepensePageWidget> {
                                   ),
                             ),
                             StreamBuilder<List<ActivitesRecord>>(
-                              stream: queryActivitesRecord(),
+                              stream: queryActivitesRecord(limit: 100),
                               builder: (context, snapshot) {
                                 // Customize what your widget looks like when it's loading.
                                 if (!snapshot.hasData) {
@@ -1215,43 +1218,13 @@ class _AjouterDepensePageWidgetState extends State<AjouterDepensePageWidget> {
                             ),
                           ].divide(SizedBox(height: 8.0)),
                         ),
-                        Column(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            wrapWithModel(
-                              model: _model.imagepicker1Model,
-                              updateCallback: () => safeSetState(() {}),
-                              child: Imagepicker1Widget(),
-                            ),
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        4.0, 0.0, 4.0, 0.0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: Image.network(
-                                        valueOrDefault<String>(
-                                          _model
-                                              .imagepicker1Model
-                                              .uploadedFileUrls_uploadDataJustif
-                                              .lastOrNull,
-                                          '0',
-                                        ),
-                                        width: 200.0,
-                                        height: 200.0,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ].divide(SizedBox(height: 12.0)),
+                        DemeterImagePicker(
+                          label: 'Justificatif (facture / reçu)',
+                          storagePath: 'depenses/justificatifs',
+                          allowMultiple: true,
+                          maxImages: 5,
+                          onChanged: (urls) =>
+                              safeSetState(() => _justifUrls = urls),
                         ),
                       ].divide(SizedBox(height: 24.0)),
                     ),
@@ -1266,27 +1239,45 @@ class _AjouterDepensePageWidgetState extends State<AjouterDepensePageWidget> {
                     ),
                     child: FFButtonWidget(
                       onPressed: () async {
-                        await DepensesRecord.collection
-                            .doc()
-                            .set(createDepensesRecordData(
-                              montant: double.tryParse(
-                                  _model.montantdepenseTextController.text),
+                        if (!_model.formKey.currentState!.validate()) return;
+
+                        final newRef = DepensesRecord.collection.doc();
+                        final ok = await ErrorHandler.instance.runFirestore(
+                          context,
+                          () async {
+                            await newRef.set(createDepensesRecordData(
+                              montant: double.tryParse(_model
+                                  .montantdepenseTextController.text
+                                  .replaceAll(',', '.')),
                               categorie: _model.categoriedepenseValue,
                               date: _model.datePicked,
-                              affecteeA: _model.beneficiaireTextController.text,
+                              affecteeA:
+                                  _model.beneficiaireTextController.text,
                               exploitationRef: functions.getExploitationRef(
                                   _model.exploitationdepenseValue),
                               libelleDepense:
                                   _model.libelleDepenseTextController.text,
-                              commentaireDepense:
-                                  _model.commentaireDepenseTextController.text,
+                              commentaireDepense: _model
+                                  .commentaireDepenseTextController.text,
                               statut: 'demande',
                               libelleParcelle: _model.parcelledepenseValue,
                               validateur: 'NoOne',
                               autorisation: 'En attente',
+                              justificatifUrl: _justifUrls.isNotEmpty
+                                  ? _justifUrls.first
+                                  : null,
                             ));
-
-                        context.pushNamed(DashboardPageWidget.routeName);
+                            if (_justifUrls.isNotEmpty) {
+                              await newRef
+                                  .update({'Justif_depense': _justifUrls});
+                            }
+                          },
+                          operation: 'l\'enregistrement de la dépense',
+                          successMessage: 'Dépense enregistrée avec succès',
+                        );
+                        if (ok && context.mounted) {
+                          context.pushNamed(DashboardPageWidget.routeName);
+                        }
                       },
                       text: 'Enregistrer la dépense',
                       options: FFButtonOptions(
